@@ -1,36 +1,57 @@
-import * as React from "react";
-import Box from "@mui/material/Box";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import { Container } from "@mui/material";
+import React, { useState } from "react";
+import { Col, Menu, Row } from "antd";
+import Leaflets from "./pages/Leaflets";
+import Booklets from "./pages/Booklets";
+import Share from "./components/Share";
 
-export default function App() {
-  const [age, setAge] = React.useState("");
+const items = [
+  {
+    label: "Листовки",
+    key: "leaflets",
+  },
+  {
+    label: "Брошюры",
+    key: "booklets",
+  },
+  {
+    label: "Раскладка",
+    key: "finalLayout",
+  },
+];
 
-  const handleChange = (event) => {
-    setAge(event.target.value);
+const App = () => {
+  const [nav, setNav] = useState("leaflets");
+
+  const onClick = (e) => {
+    setNav(e.key);
+  };
+
+  const getComponent = () => {
+    switch (nav) {
+      case "leaflets":
+        return <Leaflets />;
+      case "booklets":
+        return <Booklets />;
+      case "finalLayout":
+        break;
+    }
   };
 
   return (
-    <Container maxWidth="sm">
-      <Box sx={{ minWidth: 120 }}>
-        <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">Age</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={age}
-            label="Age"
-            onChange={handleChange}
-          >
-            <MenuItem value={10}>Ten</MenuItem>
-            <MenuItem value={20}>Twenty</MenuItem>
-            <MenuItem value={30}>Thirty</MenuItem>
-          </Select>
-        </FormControl>
-      </Box>
-    </Container>
+    <Row justify={"center"}>
+      <Col span={6}>
+        <Menu
+          onClick={onClick}
+          selectedKeys={[nav]}
+          mode="horizontal"
+          items={items}
+          style={{ justifyContent: "center" }}
+        />
+        {getComponent()}
+        <Share />
+      </Col>
+    </Row>
   );
-}
+};
+
+export default App;

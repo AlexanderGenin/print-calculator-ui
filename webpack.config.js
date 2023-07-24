@@ -5,7 +5,6 @@ module.exports = {
   entry: "./index.js",
   output: {
     filename: "[name].bundle.js",
-    publicPath: "/",
   },
   mode: "development",
   devtool: "inline-source-map",
@@ -40,6 +39,6 @@ module.exports = {
     open: true,
     compress: true,
     hot: true,
-    port: 8080,
+    port: 9000,
   },
 };
