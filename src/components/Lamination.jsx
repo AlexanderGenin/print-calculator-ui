@@ -6,21 +6,13 @@ const Lamination = () => {
   const [sides, setSides] = useState(1);
 
   return (
-    <div
-      style={{
-        border: "1px solid silver",
-        borderRadius: "20px",
-        padding: "1rem 1rem 0 1rem",
-      }}
-    >
-      <Form.Item wrapperCol={{ span: 24 }} style={{ margin: 0 }}>
+    <>
+      <Form.Item label="Ламинирование" style={{ margin: 0 }}>
         <Form.Item>
           <Checkbox
             checked={isLaminationOn}
             onChange={(e) => setIsLaminationOn(e.target.checked)}
-          >
-            Ламинирование
-          </Checkbox>
+          />
         </Form.Item>
         {isLaminationOn && (
           <>
@@ -49,7 +41,7 @@ const Lamination = () => {
           </>
         )}
       </Form.Item>
-    </div>
+    </>
   );
 };
 

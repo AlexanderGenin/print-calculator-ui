@@ -5,6 +5,8 @@ import Lamination from "../components/Lamination";
 import Result from "../components/Result";
 import Size from "../components/Size";
 import Quantity from "../components/Quantity";
+import Border from "../ui/Border";
+import { formProps } from "../utils/formProps";
 
 const { Title } = Typography;
 
@@ -14,18 +16,18 @@ const Leaflets = () => {
       <Title level={3} style={{ alignSelf: "start" }}>
         Листовки
       </Title>
-      <Form
-        name="basic"
-        labelCol={{ span: 8 }}
-        wrapperCol={{ span: 16 }}
-        initialValues={{ remember: true }}
-        autoComplete="off"
-      >
-        <Space direction="vertical" size={"middle"} style={{ width: "100%" }}>
-          <Size />
+      <Form {...formProps}>
+        <Space direction="vertical" size="middle" style={{ width: "100%" }}>
+          <Border>
+            <Size />
+          </Border>
           <Quantity />
-          <Material />
-          <Lamination />
+          <Border>
+            <Material />
+          </Border>
+          <Border>
+            <Lamination />
+          </Border>
           <Result />
         </Space>
       </Form>

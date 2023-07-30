@@ -19,8 +19,8 @@ const Result = () => {
         }}
       >
         <Text>
-          <ShoppingOutlined />
-          Вес тиража: <span style={{ fontWeight: "bold" }}>123,16 кг</span>
+          <ShoppingOutlined /> Вес тиража:{" "}
+          <span style={{ fontWeight: "bold" }}>123,16 кг</span>
         </Text>
         <Text>
           <ColumnHeightOutlined /> Высота всего тиража:{" "}
@@ -28,9 +28,9 @@ const Result = () => {
         </Text>
       </div>
       <Text>
-        <InboxOutlined style={{ verticalAlign: "middle" }} />
-        Можно использовать гофрокороб (ДхШхВ):
-        <div style={{ fontWeight: "bold" }}>
+        <InboxOutlined style={{ verticalAlign: "middle" }} /> Можно использовать
+        гофрокороб (ДхШхВ):
+        <div style={{ fontWeight: "bold", paddingLeft: "20px" }}>
           №38 (380х304х285) 12 шт по 10,3 кг <br />
           №18 (630х320х340) 9 шт по 13,8 кг <br />
           №38 (380х304х285) 9 шт по 13,8 кг <br />

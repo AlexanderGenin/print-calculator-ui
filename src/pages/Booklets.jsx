@@ -1,10 +1,13 @@
 import React from "react";
-import { Collapse, Form, Space, Typography } from "antd";
+import { Collapse, Divider, Form, Space, Typography } from "antd";
 import Material from "../components/Material";
 import Lamination from "../components/Lamination";
 import Result from "../components/Result";
 import Size from "../components/Size";
 import Quantity from "../components/Quantity";
+import Border from "../ui/Border";
+import { formProps } from "../utils/formProps";
+import Pages from "../components/Pages";
 
 const { Title } = Typography;
 
@@ -15,12 +18,10 @@ const items = [
     children: (
       <>
         <Material />
+        <Divider />
         <Lamination />
       </>
     ),
-    style: {
-      fontWeight: "bold",
-    },
   },
   {
     key: "block",
@@ -28,7 +29,6 @@ const items = [
     children: (
       <>
         <Material />
-        <Lamination />
       </>
     ),
   },
@@ -40,22 +40,16 @@ const Booklets = () => {
       <Title level={3} style={{ alignSelf: "start" }}>
         Брошюры
       </Title>
-      <Form
-        name="basic"
-        labelCol={{ span: 8 }}
-        wrapperCol={{ span: 16 }}
-        initialValues={{ remember: true }}
-        autoComplete="off"
-      >
+      <Form {...formProps}>
         <Space direction="vertical" size={"middle"} style={{ width: "100%" }}>
-          <Size />
+          <Border>
+            <Size />
+          </Border>
           <Quantity />
-          <Collapse
-            accordion
-            items={items}
-            defaultActiveKey={["cover"]}
-            ghost
-          />
+          <Border>
+            <Pages />
+          </Border>
+          <Collapse items={items} defaultActiveKey={["cover"]} />
           <Result />
         </Space>
       </Form>

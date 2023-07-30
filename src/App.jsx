@@ -3,6 +3,7 @@ import { Col, Menu, Row } from "antd";
 import Leaflets from "./pages/Leaflets";
 import Booklets from "./pages/Booklets";
 import Share from "./components/Share";
+import FinalLayout from "./pages/FinalLayout";
 
 const items = [
   {
@@ -33,7 +34,7 @@ const App = () => {
       case "booklets":
         return <Booklets />;
       case "finalLayout":
-        break;
+        return <FinalLayout />;
     }
   };
 
