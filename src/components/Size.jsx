@@ -1,42 +1,61 @@
+import React from "react";
 import { CloseOutlined } from "@ant-design/icons";
 import { Form, InputNumber, Select, Space } from "antd";
-import React from "react";
-import Border from "../ui/Border";
+import { sizes, sizeLabels } from "../data/size";
 
-const Size = () => {
+const Size = ({ form }) => {
+  const handleSizeSelect = (s) => {
+    form.setFieldsValue({
+      size: s,
+      ...(s === "custom" ? {} : { width: sizes[s][0], height: sizes[s][1] }),
+    });
+  };
+
+  const handleHeightChange = (h) => {
+    form.setFieldsValue({
+      size: "custom",
+    });
+  };
+
+  const handleWidthChange = (w) => {
+    form.setFieldsValue({
+      size: "custom",
+    });
+  };
+
   return (
-    <>
+    <Form.Item noStyle>
       <Form.Item label={"Размер"} name="size" required>
         <Select
-          defaultValue="A4"
-          options={[{ value: "A4", label: "A4 (210 x 297 mm)" }]}
+          options={[...sizeLabels]}
           rules={[{ required: true, message: "Обязательное поле" }]}
+          onChange={handleSizeSelect}
         />
       </Form.Item>
       <Form.Item wrapperCol={{ offset: 8, span: 16 }} required>
         <Space align="center">
-          <Form.Item name="dimensionX" style={{ margin: 0 }}>
+          <Form.Item name="width" style={{ margin: 0 }}>
             <InputNumber
               min={1}
               max={1000}
-              defaultValue={3}
               style={{ width: "100%" }}
+              onChange={handleWidthChange}
             />
           </Form.Item>
           <div>
             <CloseOutlined />
           </div>
-          <Form.Item name="dimensionY" style={{ margin: 0 }}>
+          <Form.Item name="height" style={{ margin: 0 }}>
             <InputNumber
               min={1}
               max={1000}
-              defaultValue={3}
               style={{ width: "100%" }}
+              onChange={handleHeightChange}
             />
           </Form.Item>
         </Space>
       </Form.Item>
-    </>
+    </Form.Item>
   );
 };
 

@@ -6,7 +6,7 @@ import Result from "../components/Result";
 import Size from "../components/Size";
 import Quantity from "../components/Quantity";
 import Border from "../ui/Border";
-import { formProps } from "../utils/formProps";
+import { formConfig } from "../utils/formConfig";
 import Pages from "../components/Pages";
 
 const { Title } = Typography;
@@ -40,7 +40,7 @@ const Booklets = () => {
       <Title level={3} style={{ alignSelf: "start" }}>
         Брошюры
       </Title>
-      <Form {...formProps}>
+      <Form {...formConfig}>
         <Space direction="vertical" size={"middle"} style={{ width: "100%" }}>
           <Border>
             <Size />

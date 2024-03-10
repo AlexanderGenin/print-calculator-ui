@@ -5,10 +5,31 @@ import {
   ColumnHeightOutlined,
   InboxOutlined,
 } from "@ant-design/icons";
+import { calcBoxesCount } from "../utils/formulas";
+import { boxes } from "../data/box";
 
 const { Title, Text } = Typography;
 
-const Result = () => {
+const Result = ({
+  productionHeight = 0,
+  productionWeight = 0,
+  itemsTotal = 2,
+}) => {
+  const boxes18Count = calcBoxesCount(
+    productionHeight,
+    itemsTotal,
+    boxes[18].height
+  );
+
+  const boxes38Count = calcBoxesCount(
+    productionHeight,
+    itemsTotal,
+    boxes[38].height
+  );
+
+  const boxes18Weight = boxes18Count && productionWeight / boxes18Count;
+  const boxes38Weight = boxes38Count && productionWeight / boxes38Count;
+
   return (
     <div>
       <Title level={3}>Результат</Title>
@@ -20,20 +41,19 @@ const Result = () => {
       >
         <Text>
           <ShoppingOutlined /> Вес тиража:{" "}
-          <span style={{ fontWeight: "bold" }}>123,16 кг</span>
+          <span style={{ fontWeight: "bold" }}>{productionWeight} г</span>
         </Text>
         <Text>
           <ColumnHeightOutlined /> Высота всего тиража:{" "}
-          <span style={{ fontWeight: "bold" }}>4506 мм</span>
+          <span style={{ fontWeight: "bold" }}>{productionHeight} мм</span>
         </Text>
       </div>
       <Text>
         <InboxOutlined style={{ verticalAlign: "middle" }} /> Можно использовать
         гофрокороб (ДхШхВ):
         <div style={{ fontWeight: "bold", paddingLeft: "20px" }}>
-          №38 (380х304х285) 12 шт по 10,3 кг <br />
-          №18 (630х320х340) 9 шт по 13,8 кг <br />
-          №38 (380х304х285) 9 шт по 13,8 кг <br />
+          №18 (630x320x340) {boxes18Count} шт по {boxes18Weight} г <br />
+          №38 (380x304x285) {boxes38Count} шт по {boxes38Weight} г <br />
         </div>
       </Text>
     </div>

@@ -7,7 +7,7 @@ import Distance from "../components/Distance";
 import Size from "../components/Size";
 import Border from "../ui/Border";
 import RotateLeftover from "../components/RotateLeftover";
-import { formProps } from "../utils/formProps";
+import { formConfig } from "../utils/formConfig";
 
 const { Title } = Typography;
 
@@ -17,7 +17,7 @@ const FinalLayout = () => {
       <Title level={3} style={{ alignSelf: "start" }}>
         Раскладка на листе
       </Title>
-      <Form {...formProps}>
+      <Form {...formConfig}>
         <Space direction="vertical" size={"middle"} style={{ width: "100%" }}>
           <Border>
             <Size />

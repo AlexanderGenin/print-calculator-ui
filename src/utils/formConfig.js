@@ -1,4 +1,4 @@
-export const formProps = {
+export const formConfig = {
   name: "basic",
   labelCol: { span: 8 },
   wrapperCol: { span: 16 },

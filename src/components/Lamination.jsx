@@ -1,44 +1,50 @@
 import { Checkbox, Form, Radio, Select } from "antd";
-import React, { useState } from "react";
+import React from "react";
+import {
+  laminations,
+  filmThicknessMicronLabels,
+  laminationLabels,
+} from "../data/lamination";
 
-const Lamination = () => {
-  const [isLaminationOn, setIsLaminationOn] = useState(false);
-  const [sides, setSides] = useState(1);
+const Lamination = ({ form }) => {
+  const lamination = Form.useWatch("lamination");
+
+  const handleLaminationChange = (type) => {
+    const { filmThicknessMicron, filmTexture } = laminations[type];
+
+    form.setFieldsValue({
+      filmTexture,
+      filmThicknessMicron,
+    });
+  };
 
   return (
     <>
       <Form.Item label="Ламинирование" style={{ margin: 0 }}>
-        <Form.Item>
-          <Checkbox
-            checked={isLaminationOn}
-            onChange={(e) => setIsLaminationOn(e.target.checked)}
-          />
+        <Form.Item name="lamination" valuePropName="checked">
+          <Checkbox />
         </Form.Item>
-        {isLaminationOn && (
-          <>
-            <Form.Item>
-              <Radio.Group value={sides}>
-                <Radio value={1} onChange={(e) => setSides(e.target.value)}>
-                  One side
-                </Radio>
-                <Radio value={2} onChange={(e) => setSides(e.target.value)}>
-                  Both sides
-                </Radio>
+        {lamination && (
+          <div>
+            <Form.Item name="laminationSides">
+              <Radio.Group>
+                <Radio value={1}>Одна стороны</Radio>
+                <Radio value={2}>Две стороны</Radio>
               </Radio.Group>
             </Form.Item>
-            <Form.Item label={"Film type"}>
+            <Form.Item label={"Тип ламината"} name="filmType">
               <Select
-                defaultValue="glossy"
-                options={[{ value: "glossy", label: "glossy" }]}
+                options={[...laminationLabels]}
+                onChange={handleLaminationChange}
               />
             </Form.Item>
-            <Form.Item label={"Film thickness (mkm)"}>
-              <Select
-                defaultValue="70"
-                options={[{ value: "70", label: "70" }]}
-              />
+            <Form.Item
+              label={"Толщина ламината (мкм)"}
+              name="filmThicknessMicron"
+            >
+              <Select options={[...filmThicknessMicronLabels]} />
             </Form.Item>
-          </>
+          </div>
         )}
       </Form.Item>
     </>
