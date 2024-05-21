@@ -1,21 +1,35 @@
+import React, { useState, useEffect } from "react";
 import { Checkbox, Form, Radio, Select } from "antd";
-import React from "react";
-import {
-  laminations,
-  filmThicknessMicronLabels,
-  laminationLabels,
-} from "../data/lamination";
+import { getLaminations } from "../api/materialsApi"; // materialsApi
 
 const Lamination = ({ form }) => {
-  const lamination = Form.useWatch("lamination");
+  const [laminationData, setLaminationData] = useState(null);
+
+  useEffect(() => {
+    const fetchLaminations = async () => {
+      try {
+        const data = await getLaminations();
+        setLaminationData(data);
+      } catch (error) {
+        console.error("Failed to fetch laminations:", error);
+      }
+    };
+
+    fetchLaminations();
+  }, []);
 
   const handleLaminationChange = (type) => {
-    const { filmThicknessMicron, filmTexture } = laminations[type];
+    if (!type) return;
 
-    form.setFieldsValue({
-      filmTexture,
-      filmThicknessMicron,
-    });
+    const selectedLamination = laminationData.find((lamination) => lamination.type === type);
+
+    if (selectedLamination) {
+      form.setFieldsValue({
+        filmType: type,
+        laminationSides: selectedLamination.sides,
+        filmThicknessMicron: selectedLamination.filmThicknessMicron,
+      });
+    }
   };
 
   return (
@@ -24,25 +38,31 @@ const Lamination = ({ form }) => {
         <Form.Item name="lamination" valuePropName="checked">
           <Checkbox />
         </Form.Item>
-        {lamination && (
+        {laminationData && form.getFieldValue("lamination") && (
           <div>
             <Form.Item name="laminationSides">
               <Radio.Group>
-                <Radio value={1}>Одна стороны</Radio>
+                <Radio value={1}>Одна сторона</Radio>
                 <Radio value={2}>Две стороны</Radio>
               </Radio.Group>
             </Form.Item>
             <Form.Item label={"Тип ламината"} name="filmType">
-              <Select
-                options={[...laminationLabels]}
-                onChange={handleLaminationChange}
-              />
+              <Select onChange={handleLaminationChange}>
+                {laminationData.map((lamination) => (
+                  <Select.Option key={lamination.type} value={lamination.type}>
+                    {lamination.label}
+                  </Select.Option>
+                ))}
+              </Select>
             </Form.Item>
-            <Form.Item
-              label={"Толщина ламината (мкм)"}
-              name="filmThicknessMicron"
-            >
-              <Select options={[...filmThicknessMicronLabels]} />
+            <Form.Item label={"Толщина ламината (мкм)"} name="filmThicknessMicron">
+              <Select>
+                {laminationData.map((lamination) => (
+                  <Select.Option key={lamination.filmThicknessMicron} value={lamination.filmThicknessMicron}>
+                    {lamination.filmThicknessMicron}
+                  </Select.Option>
+                ))}
+              </Select>
             </Form.Item>
           </div>
         )}
