@@ -12,9 +12,9 @@ import Controls from "../components/Controls";
 
 const Leaflets = () => {
   const [form] = Form.useForm();
-  const [productionHeight, setProductionHeight] = useState(0);
-  const [productionWeight, setProductionWeight] = useState(0);
-  const [itemsTotal, setItemsTotal] = useState(0);
+  const [productionHeight] = useState(0);
+  const [productionWeight] = useState(0);
+  const [itemsTotal] = useState(0);
 
   const handleFinish = async (values: {
     // quantity: number;
