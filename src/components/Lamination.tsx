@@ -1,15 +1,24 @@
 import { Checkbox, Form, Radio, Select } from "antd";
-import React from "react";
+import { useForm } from "antd/es/form/Form";
 import {
   laminations,
   filmThicknessMicronLabels,
   laminationLabels,
 } from "../data/lamination";
 
-const Lamination = ({ form }) => {
+const Lamination = () => {
   const lamination = Form.useWatch("lamination");
 
-  const handleLaminationChange = (type) => {
+  const [form] = useForm();
+
+  // const apiClient = useApi();
+
+  // const { data, error, isLoading } = useQuery({
+  //   queryKey: ["laminates"],
+  //   queryFn: () => apiClient.getLaminates(),
+  // });
+
+  const handleLaminationChange = (type: "gloss" | "opaque") => {
     const { filmThicknessMicron, filmTexture } = laminations[type];
 
     form.setFieldsValue({

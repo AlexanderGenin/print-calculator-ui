@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { Form, Space, Typography, message } from "antd";
+import { useState } from "react";
+import { Form, Space, message } from "antd";
+import Title from "antd/es/typography/Title";
 import Material from "../components/Material";
 import Lamination from "../components/Lamination";
 import Result from "../components/Result";
@@ -16,15 +17,22 @@ import {
 import { laminations } from "../data/lamination";
 import { materials } from "../data/material";
 
-const { Title } = Typography;
-
 const Leaflets = () => {
   const [form] = Form.useForm();
   const [productionHeight, setProductionHeight] = useState(0);
   const [productionWeight, setProductionWeight] = useState(0);
   const [itemsTotal, setItemsTotal] = useState(0);
 
-  const handleFinish = async (values) => {
+  const handleFinish = async (values: {
+    quantity: number;
+    laminationSides: number;
+    width: number;
+    height: number;
+    filmType: keyof typeof laminations;
+    mediaGramsSqMeterWeight: number;
+    filmThicknessMicron: number;
+    mediaName: string;
+  }) => {
     const {
       quantity,
       laminationSides,
@@ -36,13 +44,14 @@ const Leaflets = () => {
       mediaName,
     } = values;
 
-    const { mediaThicknessMm } = materials.find(
-      (m) => m.mediaName === mediaName
-    );
+    const { mediaThicknessMm = 0 } =
+      materials.find((m) => m.mediaName === mediaName) ?? {};
 
-    const { filmRollWeightKg, filmRollLength, filmRollWidth } = filmType
-      ? laminations[filmType]
-      : {};
+    const {
+      filmRollWeightKg = 0,
+      filmRollLength = 0,
+      filmRollWidth = 0,
+    } = filmType ? laminations[filmType] : {};
 
     try {
       setProductionWeight(
@@ -102,16 +111,16 @@ const Leaflets = () => {
       >
         <Space direction="vertical" size="middle" style={{ width: "100%" }}>
           <Border>
-            <Size form={form} />
+            <Size />
           </Border>
           <Quantity />
           <Border>
-            <Material form={form} />
+            <Material />
           </Border>
           <Border>
-            <Lamination form={form} />
+            <Lamination />
           </Border>
-          <Controls form={form} />
+          <Controls />
           <Result
             productionHeight={productionHeight}
             productionWeight={productionWeight}

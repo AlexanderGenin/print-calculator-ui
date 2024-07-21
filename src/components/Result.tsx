@@ -1,5 +1,3 @@
-import Typography from "antd/es/typography/Typography";
-import React from "react";
 import {
   ShoppingOutlined,
   ColumnHeightOutlined,
@@ -7,8 +5,8 @@ import {
 } from "@ant-design/icons";
 import { calcBoxesCount } from "../utils/formulas";
 import { boxes } from "../data/box";
-
-const { Title, Text } = Typography;
+import Title from "antd/es/typography/Title";
+import Text from "antd/es/typography/Text";
 
 const Result = ({
   productionHeight = 0,

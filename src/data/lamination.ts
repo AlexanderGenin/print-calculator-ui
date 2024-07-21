@@ -19,6 +19,19 @@ export const laminations = {
   },
 };
 
+const external = [
+  {
+    id: 1,
+    article: "lam-1",
+    caption: "Глянцевый 450",
+    typeId: 8,
+    length: 10,
+    width: 0.45,
+    thickness: 0.00003,
+    weight: 1,
+  },
+];
+
 export const laminationLabels = [
   { label: "матовая", value: "opaque" },
   { label: "глянцевая", value: "gloss" },

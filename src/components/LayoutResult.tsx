@@ -1,10 +1,8 @@
 import { AppstoreOutlined, Loading3QuartersOutlined } from "@ant-design/icons";
-import { Typography } from "antd";
-import React from "react";
 import Flex from "../ui/Flex";
 import LayoutRender from "../ui/LayoutRender";
-
-const { Title, Text } = Typography;
+import Title from "antd/es/typography/Title";
+import Text from "antd/es/typography/Text";
 
 const LayoutResult = () => {
   return (

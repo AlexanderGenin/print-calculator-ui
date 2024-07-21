@@ -1,22 +1,22 @@
 const calcPaperWeight = (
-  quantity,
-  mediaGramsSqMeterWeight,
-  detailWidth,
-  detailLength
+  quantity: number,
+  mediaGramsSqMeterWeight: number,
+  detailWidth: number,
+  detailLength: number
 ) => (quantity * mediaGramsSqMeterWeight * detailWidth * detailLength) / 1e6; // gram;
 
 const calcOneSqMLaminateWeight = (
-  filmRollWeightKg,
-  filmRollLength,
-  filmRollWidth
+  filmRollWeightKg: number,
+  filmRollLength: number,
+  filmRollWidth: number
 ) => (1e6 * filmRollWeightKg) / (filmRollLength * filmRollWidth); // gram;
 
 const calcLaminateWeight = (
-  quantity,
-  laminationSides,
-  oneSqMLaminateWeight,
-  detailWidth,
-  detailLength
+  quantity: number,
+  laminationSides: number,
+  oneSqMLaminateWeight: number,
+  detailWidth: number,
+  detailLength: number
 ) =>
   (quantity *
     laminationSides *
@@ -25,10 +25,12 @@ const calcLaminateWeight = (
     detailLength) /
   1e6; // gram;
 
-const calcPaperThickness = (mediaThicknessMm) => mediaThicknessMm;
+const calcPaperThickness = (mediaThicknessMm: number) => mediaThicknessMm;
 
-const calcLaminateThickness = (laminationSides, filmThicknessMicron) =>
-  laminationSides * filmThicknessMicron * 1000;
+const calcLaminateThickness = (
+  laminationSides: number,
+  filmThicknessMicron: number
+) => laminationSides * filmThicknessMicron * 1000;
 
 export const calcProductionWeight = ({
   quantity,
@@ -39,6 +41,15 @@ export const calcProductionWeight = ({
   filmRollLength,
   filmRollWidth,
   mediaGramsSqMeterWeight,
+}: {
+  quantity: number;
+  laminationSides: number;
+  detailWidth: number;
+  detailLength: number;
+  filmRollWeightKg: number;
+  filmRollLength: number;
+  filmRollWidth: number;
+  mediaGramsSqMeterWeight: number;
 }) =>
   calcPaperWeight(
     quantity,
@@ -60,23 +71,28 @@ export const calcProductionHeight = ({
   mediaThicknessMm,
   laminationSides = 0,
   filmThicknessMicron = 0,
+}: {
+  quantity: number;
+  mediaThicknessMm: number;
+  laminationSides: number;
+  filmThicknessMicron: number;
 }) =>
   quantity *
   (calcPaperThickness(mediaThicknessMm) +
     calcLaminateThickness(laminationSides, filmThicknessMicron)); // mm
 
 export const calcImposition = (
-  boxWidth,
-  boxLength,
-  detailWidth,
-  detailLength,
-  gapX,
-  gapY,
-  marginLeft,
-  marginRight,
-  marginUp,
-  marginDown,
-  isRotate
+  // boxWidth: number,
+  // boxLength: number,
+  // detailWidth: number,
+  // detailLength: number,
+  // gapX: number,
+  // gapY: number,
+  // marginLeft: number,
+  // marginRight: number,
+  // marginUp: number,
+  // marginDown: number,
+  // isRotate: number
 ) => ({ itemsX: 2, itemsY: 1, itemsRotated: 0 });
 
 export const calcItemsTotal = () => {
@@ -84,5 +100,5 @@ export const calcItemsTotal = () => {
   return itemsX * itemsY + itemsRotated;
 };
 
-export const calcBoxesCount = (productionHeightTotal, itemsTotal, boxHeight) =>
+export const calcBoxesCount = (productionHeightTotal: number, itemsTotal: number, boxHeight: number) =>
   itemsTotal && boxHeight ? productionHeightTotal / itemsTotal / boxHeight : 0;

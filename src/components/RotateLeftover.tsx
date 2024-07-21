@@ -1,6 +1,4 @@
-import Checkbox from "antd/es/checkbox/Checkbox";
-import Form from "antd/es/form/Form";
-import React from "react";
+import { Form, Checkbox } from "antd";
 
 const RotateLeftover = () => {
   return (

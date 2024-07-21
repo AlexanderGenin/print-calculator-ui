@@ -1,6 +1,5 @@
 import { CloseOutlined } from "@ant-design/icons";
 import { Form, InputNumber, Space } from "antd";
-import React from "react";
 
 const Layout = () => {
   return (

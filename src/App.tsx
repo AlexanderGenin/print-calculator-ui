@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Col, Menu, Row } from "antd";
 import Leaflets from "./pages/Leaflets";
 import Booklets from "./pages/Booklets";
 import Share from "./components/Share";
 import FinalLayout from "./pages/FinalLayout";
+import { ApiProvider } from "./context/ApiProvider";
 
 const items = [
   {
@@ -20,14 +22,12 @@ const items = [
   },
 ];
 
+const queryClient = new QueryClient();
+
 const App = () => {
   const [nav, setNav] = useState("leaflets");
 
-  const onClick = (e) => {
-    setNav(e.key);
-  };
-
-  const getComponent = () => {
+  const getPage = () => {
     switch (nav) {
       case "leaflets":
         return <Leaflets />;
@@ -39,19 +39,23 @@ const App = () => {
   };
 
   return (
-    <Row justify={"center"}>
-      <Col span={6}>
-        <Menu
-          onClick={onClick}
-          selectedKeys={[nav]}
-          mode="horizontal"
-          items={items}
-          style={{ justifyContent: "center" }}
-        />
-        {getComponent()}
-        <Share />
-      </Col>
-    </Row>
+    <ApiProvider>
+      <QueryClientProvider client={queryClient}>
+        <Row justify={"center"}>
+          <Col span={6}>
+            <Menu
+              onClick={(e) => setNav(e.key)}
+              selectedKeys={[nav]}
+              mode="horizontal"
+              items={items}
+              style={{ justifyContent: "center" }}
+            />
+            {getPage()}
+            <Share />
+          </Col>
+        </Row>
+      </QueryClientProvider>
+    </ApiProvider>
   );
 };
 

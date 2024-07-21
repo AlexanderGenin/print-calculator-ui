@@ -5,7 +5,6 @@ import {
   WhatsAppOutlined,
 } from "@ant-design/icons";
 import { Button, Space } from "antd";
-import React from "react";
 import { blue } from "@ant-design/colors";
 
 const Share = () => {

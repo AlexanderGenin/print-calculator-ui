@@ -1,15 +1,12 @@
-import React from "react";
+import Title from "antd/es/typography/Title";
 import Layout from "../components/Layout";
 import { Form, Space } from "antd";
-import Typography from "antd/es/typography/Typography";
 import LayoutResult from "../components/LayoutResult";
 import Distance from "../components/Distance";
 import Size from "../components/Size";
 import Border from "../ui/Border";
 import RotateLeftover from "../components/RotateLeftover";
 import { formConfig } from "../utils/formConfig";
-
-const { Title } = Typography;
 
 const FinalLayout = () => {
   return (

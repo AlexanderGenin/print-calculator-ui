@@ -1,5 +1,5 @@
 import { Form, Select } from "antd";
-import React from "react";
+import { useForm } from "antd/es/form/Form";
 import {
   materials,
   mediaColorLabels,
@@ -9,8 +9,10 @@ import {
   mediaNameToIdMap,
 } from "../data/material";
 
-const Material = ({ form }) => {
-  const handleMediaNameChange = (m) => {
+const Material = () => {
+  const [form] = useForm();
+
+  const handleMediaNameChange = (m: keyof typeof mediaNameToIdMap) => {
     const properties = materials.find(({ id }) => id === mediaNameToIdMap[m]);
 
     form.setFieldsValue({

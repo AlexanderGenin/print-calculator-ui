@@ -1,23 +1,25 @@
-import React from "react";
 import { CloseOutlined } from "@ant-design/icons";
 import { Form, InputNumber, Select, Space } from "antd";
+import { useForm } from "antd/es/form/Form";
 import { sizes, sizeLabels } from "../data/size";
 
-const Size = ({ form }) => {
-  const handleSizeSelect = (s) => {
+const Size = () => {
+  const [form] = useForm();
+
+  const handleSizeSelect = (s: keyof typeof sizes) => {
     form.setFieldsValue({
       size: s,
       ...(s === "custom" ? {} : { width: sizes[s][0], height: sizes[s][1] }),
     });
   };
 
-  const handleHeightChange = (h) => {
+  const handleHeightChange = () => {
     form.setFieldsValue({
       size: "custom",
     });
   };
 
-  const handleWidthChange = (w) => {
+  const handleWidthChange = () => {
     form.setFieldsValue({
       size: "custom",
     });
@@ -26,11 +28,7 @@ const Size = ({ form }) => {
   return (
     <Form.Item noStyle>
       <Form.Item label={"Размер"} name="size" required>
-        <Select
-          options={[...sizeLabels]}
-          rules={[{ required: true, message: "Обязательное поле" }]}
-          onChange={handleSizeSelect}
-        />
+        <Select options={[...sizeLabels]} onChange={handleSizeSelect} />
       </Form.Item>
       <Form.Item wrapperCol={{ offset: 8, span: 16 }} required>
         <Space align="center">
