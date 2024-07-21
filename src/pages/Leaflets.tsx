@@ -9,13 +9,6 @@ import Quantity from "../components/Quantity";
 import Border from "../ui/Border";
 import { formConfig } from "../utils/formConfig";
 import Controls from "../components/Controls";
-import {
-  calcItemsTotal,
-  calcProductionHeight,
-  calcProductionWeight,
-} from "../utils/formulas";
-import { laminations } from "../data/lamination";
-import { materials } from "../data/material";
 
 const Leaflets = () => {
   const [form] = Form.useForm();
@@ -24,57 +17,57 @@ const Leaflets = () => {
   const [itemsTotal, setItemsTotal] = useState(0);
 
   const handleFinish = async (values: {
-    quantity: number;
-    laminationSides: number;
-    width: number;
-    height: number;
-    filmType: keyof typeof laminations;
-    mediaGramsSqMeterWeight: number;
-    filmThicknessMicron: number;
-    mediaName: string;
+    // quantity: number;
+    // laminationSides: number;
+    // width: number;
+    // height: number;
+    // filmType: keyof typeof laminations;
+    // mediaGramsSqMeterWeight: number;
+    // filmThicknessMicron: number;
+    // mediaName: string;
   }) => {
-    const {
-      quantity,
-      laminationSides,
-      width,
-      height,
-      filmType,
-      mediaGramsSqMeterWeight,
-      filmThicknessMicron,
-      mediaName,
-    } = values;
+    // const {
+    //   quantity,
+    //   laminationSides,
+    //   width,
+    //   height,
+    //   filmType,
+    //   mediaGramsSqMeterWeight,
+    //   filmThicknessMicron,
+    //   mediaName,
+    // } = values;
 
-    const { mediaThicknessMm = 0 } =
-      materials.find((m) => m.mediaName === mediaName) ?? {};
+    // const { mediaThicknessMm = 0 } =
+    //   materials.find((m) => m.mediaName === mediaName) ?? {};
 
-    const {
-      filmRollWeightKg = 0,
-      filmRollLength = 0,
-      filmRollWidth = 0,
-    } = filmType ? laminations[filmType] : {};
+    // const {
+    //   filmRollWeightKg = 0,
+    //   filmRollLength = 0,
+    //   filmRollWidth = 0,
+    // } = filmType ? laminations[filmType] : {};
 
     try {
-      setProductionWeight(
-        calcProductionWeight({
-          quantity,
-          laminationSides,
-          detailWidth: width,
-          detailLength: height,
-          filmRollWeightKg,
-          filmRollLength,
-          filmRollWidth,
-          mediaGramsSqMeterWeight,
-        })
-      );
-      setProductionHeight(
-        calcProductionHeight({
-          quantity,
-          mediaThicknessMm,
-          laminationSides,
-          filmThicknessMicron,
-        })
-      );
-      setItemsTotal(calcItemsTotal());
+      // setProductionWeight(
+      //   calcProductionWeight({
+      //     quantity,
+      //     laminationSides,
+      //     detailWidth: width,
+      //     detailLength: height,
+      //     filmRollWeightKg,
+      //     filmRollLength,
+      //     filmRollWidth,
+      //     mediaGramsSqMeterWeight,
+      //   })
+      // );
+      // setProductionHeight(
+      //   calcProductionHeight({
+      //     quantity,
+      //     mediaThicknessMm,
+      //     laminationSides,
+      //     filmThicknessMicron,
+      //   })
+      // );
+      // setItemsTotal(calcItemsTotal());
       console.log("Success:", values);
       message.success("Расчет произведен успешно!");
     } catch (error) {
@@ -93,19 +86,19 @@ const Leaflets = () => {
         form={form}
         onFinish={handleFinish}
         initialValues={{
-          size: "A4",
+          size: 1,
           width: 210,
           height: 297,
           quantity: 100,
-          mediaName: "opaque",
-          mediaTexture: "opaque",
-          mediaGramsSqMeterWeight: 170,
-          mediaColor: "white",
-          lamination: false,
+          materialType: 1,
+          paperColor: 1,
+          paperFacture: 1,
+          paperDensity: 0.08,
           sidesNumber: 1,
+          isLaminationOn: false,
           laminationSides: 1,
-          filmType: "gloss",
-          filmThicknessMicron: 30,
+          lamination: 1,
+          laminateThickness: 0.00003,
         }}
         autoComplete="off"
       >

@@ -1,4 +1,11 @@
-import { Laminate } from "../types/types";
+import {
+  Laminate,
+  MaterialType,
+  Paper,
+  PaperColor,
+  PaperFacture,
+  PrintFormat,
+} from "../types/types";
 
 type ApiResponse<T> = T & {
   errorTraceId?: string;
@@ -23,47 +30,35 @@ export class ApiClient {
     }
   }
 
+  getPapers() {
+    return this.fetchData<Paper[]>("/catalog/papers");
+  }
+
+  getMaterialTypes() {
+    return this.fetchData<MaterialType[]>("/dictionaries/material-types");
+  }
+
+  getPaperColors() {
+    return this.fetchData<PaperColor[]>("/dictionaries/paper-colors");
+  }
+
+  getPaperFactures() {
+    return this.fetchData<PaperFacture[]>("/dictionaries/paper-factures");
+  }
+
+  getPaperDensities() {
+    return this.fetchData<number[]>("/catalog/papers/densities");
+  }
+
+  getPrintFormats() {
+    return this.fetchData<PrintFormat[]>("/dictionaries/print-formats");
+  }
+
   getLaminates() {
     return this.fetchData<Laminate[]>("/catalog/laminates");
   }
 
-  getLaminateTypes() {
-    return this.fetchData("/catalog/laminates/types");
-  }
-
-  getLaminatesThickness() {
-    return this.fetchData("/catalog/laminates/thickness");
-  }
-
-  getPapers() {
-    return this.fetchData("/catalog/papers");
-  }
-
-  getPapersDensities() {
-    return this.fetchData("/catalog/papers/densities");
-  }
-
-  getPapersTypes() {
-    return this.fetchData("/catalog/papers/types");
-  }
-
-  getBoxes() {
-    return this.fetchData("/catalog/boxes");
-  }
-
-  getMaterialTypes() {
-    return this.fetchData("/catalog/dictionaries/material-types");
-  }
-
-  getPrintFormats() {
-    return this.fetchData("/catalog/dictionaries/print-formats");
-  }
-
-  getPapersFactures() {
-    return this.fetchData("/catalog/dictionaries/papers-factures");
-  }
-
-  getPapersColors() {
-    return this.fetchData("/catalog/dictionaries/papers-colors");
+  getLaminateThicknesses() {
+    return this.fetchData<number[]>("/catalog/laminates/thicknesses");
   }
 }

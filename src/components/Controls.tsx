@@ -1,13 +1,13 @@
-import { Button, Form, Space } from "antd";
+import { Button, Flex, Form } from "antd";
 
 const Controls = () => (
   <Form.Item>
-    <Space>
+    <Flex gap="small">
+      <Button htmlType="reset">Reset</Button>
       <Button type="primary" htmlType="submit">
         Submit
       </Button>
-      <Button htmlType="reset">Reset</Button>
-    </Space>
+    </Flex>
   </Form.Item>
 );
 

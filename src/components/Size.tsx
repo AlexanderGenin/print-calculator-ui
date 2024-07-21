@@ -1,34 +1,26 @@
 import { CloseOutlined } from "@ant-design/icons";
 import { Form, InputNumber, Select, Space } from "antd";
-import { useForm } from "antd/es/form/Form";
-import { sizes, sizeLabels } from "../data/size";
+import { useQuery } from "@tanstack/react-query";
+import { useApi } from "../context/ApiProvider";
 
 const Size = () => {
-  const [form] = useForm();
+  const api = useApi();
 
-  const handleSizeSelect = (s: keyof typeof sizes) => {
-    form.setFieldsValue({
-      size: s,
-      ...(s === "custom" ? {} : { width: sizes[s][0], height: sizes[s][1] }),
-    });
-  };
+  const { data, isLoading } = useQuery({
+    queryKey: ["print-formats"],
+    queryFn: () => api.getPrintFormats(),
+  });
 
-  const handleHeightChange = () => {
-    form.setFieldsValue({
-      size: "custom",
-    });
-  };
-
-  const handleWidthChange = () => {
-    form.setFieldsValue({
-      size: "custom",
-    });
-  };
+  const sizeOptions =
+    data?.map((s) => ({
+      label: s.caption,
+      value: s.id,
+    })) ?? [];
 
   return (
     <Form.Item noStyle>
       <Form.Item label={"Размер"} name="size" required>
-        <Select options={[...sizeLabels]} onChange={handleSizeSelect} />
+        <Select options={[...sizeOptions]} loading={isLoading} />
       </Form.Item>
       <Form.Item wrapperCol={{ offset: 8, span: 16 }} required>
         <Space align="center">
@@ -37,7 +29,7 @@ const Size = () => {
               min={1}
               max={1000}
               style={{ width: "100%" }}
-              onChange={handleWidthChange}
+              disabled
             />
           </Form.Item>
           <div>
@@ -48,7 +40,7 @@ const Size = () => {
               min={1}
               max={1000}
               style={{ width: "100%" }}
-              onChange={handleHeightChange}
+              disabled
             />
           </Form.Item>
         </Space>

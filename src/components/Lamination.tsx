@@ -1,39 +1,38 @@
 import { Checkbox, Form, Radio, Select } from "antd";
-import { useForm } from "antd/es/form/Form";
-import {
-  laminations,
-  filmThicknessMicronLabels,
-  laminationLabels,
-} from "../data/lamination";
+import { useQuery } from "@tanstack/react-query";
+import { useApi } from "../context/ApiProvider";
+import { getOptions } from "../utils/getOptions";
 
 const Lamination = () => {
-  const lamination = Form.useWatch("lamination");
+  const isLaminationOn = Form.useWatch("isLaminationOn");
 
-  const [form] = useForm();
+  const api = useApi();
 
-  // const apiClient = useApi();
+  const { data: laminates, isLoading: isLaminatesLoading } = useQuery({
+    queryKey: ["laminate-types"],
+    queryFn: () => api.getLaminates(),
+  });
 
-  // const { data, error, isLoading } = useQuery({
-  //   queryKey: ["laminates"],
-  //   queryFn: () => apiClient.getLaminates(),
-  // });
-
-  const handleLaminationChange = (type: "gloss" | "opaque") => {
-    const { filmThicknessMicron, filmTexture } = laminations[type];
-
-    form.setFieldsValue({
-      filmTexture,
-      filmThicknessMicron,
+  const { data: laminateThicknesses, isLoading: isLaminateThicknessesLoading } =
+    useQuery({
+      queryKey: ["laminate-thicknesses"],
+      queryFn: () => api.getLaminateThicknesses(),
     });
-  };
+
+  const laminatesOptions = getOptions(laminates ?? []);
+  const laminateThicknessesOptions =
+    laminateThicknesses?.map((d) => ({
+      label: d,
+      value: d,
+    })) ?? [];
 
   return (
     <>
       <Form.Item label="Ламинирование" style={{ margin: 0 }}>
-        <Form.Item name="lamination" valuePropName="checked">
+        <Form.Item name="isLaminationOn" valuePropName="checked">
           <Checkbox />
         </Form.Item>
-        {lamination && (
+        {isLaminationOn && (
           <div>
             <Form.Item name="laminationSides">
               <Radio.Group>
@@ -41,17 +40,17 @@ const Lamination = () => {
                 <Radio value={2}>Две стороны</Radio>
               </Radio.Group>
             </Form.Item>
-            <Form.Item label={"Тип ламината"} name="filmType">
+            <Form.Item label={"Тип ламината"} name="lamination">
               <Select
-                options={[...laminationLabels]}
-                onChange={handleLaminationChange}
+                options={[...laminatesOptions]}
+                loading={isLaminatesLoading}
               />
             </Form.Item>
-            <Form.Item
-              label={"Толщина ламината (мкм)"}
-              name="filmThicknessMicron"
-            >
-              <Select options={[...filmThicknessMicronLabels]} />
+            <Form.Item label={"Толщина ламината"} name="laminateThickness">
+              <Select
+                options={[...laminateThicknessesOptions]}
+                loading={isLaminateThicknessesLoading}
+              />
             </Form.Item>
           </div>
         )}
