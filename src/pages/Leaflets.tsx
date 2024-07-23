@@ -11,7 +11,7 @@ import { formConfig } from "../utils/formConfig";
 import Controls from "../components/Controls";
 import { useMutation } from "@tanstack/react-query";
 import Box from "../components/Box";
-import { PackInBoxRequestDto } from "../types/dto";
+import { PackInBoxRequestDto, PackInBoxResponseDto } from "../types/dto";
 import { IBox, IPaper } from "../types/types";
 import { useApi } from "../context/ApiProvider";
 
@@ -40,11 +40,33 @@ interface ICalculatedFields {
   boxDimensions: string;
 }
 
+const initialResult = {
+  box: {
+    weight: 0,
+    volume: 0,
+    innerVolume: 0,
+    productQuantity: 0,
+    productVolume: 0,
+    unusedVolumePercent: 0,
+  },
+  restBox: {
+    weight: 0,
+    volume: 0,
+    innerVolume: 0,
+    productQuantity: 0,
+    productVolume: 0,
+    unusedVolumePercent: 0,
+  },
+  boxesQuantity: 0,
+  boxesWeight: 0,
+  productsVolume: 0,
+  boxesVolume: 0,
+  boxesInnerVolume: 0,
+};
+
 const Leaflets = () => {
   const [form] = Form.useForm<IForm>();
-  const [productionHeight] = useState(0);
-  const [productionWeight] = useState(0);
-  const [itemsTotal] = useState(0);
+  const [result, setResult] = useState<PackInBoxResponseDto>(initialResult);
 
   const [calculatedFields, setCalculatedFields] = useState<ICalculatedFields>({
     paperThickness: 0.0001,
@@ -59,11 +81,10 @@ const Leaflets = () => {
     mutationFn: (data: PackInBoxRequestDto) => api.postPackInBox(data),
     onSuccess: (result) => {
       console.log(result);
+      setResult(result);
       message.success("Расчет произведен успешно!");
     },
-    onError: (err) => {
-      message.error(`Ошибка: ${err}`);
-    },
+    onError: () => message.error(`Ошибка. См. консоль`),
   });
 
   const handleBoxSelect = ({
@@ -108,6 +129,7 @@ const Leaflets = () => {
         thickness: boxThickness * 1000,
         margins: boxMargins,
         weight: boxWeight * 1000,
+        maxWeight: 1,
       },
     });
   };
@@ -155,11 +177,7 @@ const Leaflets = () => {
             <Lamination />
           </Border>
           <Controls />
-          <Result
-            productionHeight={productionHeight}
-            productionWeight={productionWeight}
-            itemsTotal={itemsTotal}
-          />
+          <Result data={result} />
         </Space>
       </Form>
     </div>

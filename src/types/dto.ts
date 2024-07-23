@@ -14,20 +14,21 @@ export interface PackInBoxRequestDto {
   };
 }
 
+export interface BoxResponseDto {
+  weight: number;
+  volume: number;
+  innerVolume: number;
+  productQuantity: number;
+  productVolume: number;
+  unusedVolumePercent: number;
+}
+
 export interface PackInBoxResponseDto {
-  box: {
-    productQuantity: number;
-    productVolume: number;
-    weight: number;
-    unusedVolume: number;
-  };
-  lastBox: {
-    productQuantity: number;
-    productVolume: number;
-    weight: number;
-    unusedVolume: number;
-  };
+  box: BoxResponseDto;
+  restBox: BoxResponseDto;
+  boxesQuantity: number;
+  boxesWeight: number;
   productsVolume: number;
   boxesVolume: number;
-  boxesQuantity: number;
+  boxesInnerVolume: number;
 }

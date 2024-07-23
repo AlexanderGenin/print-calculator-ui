@@ -1,59 +1,87 @@
-import {
-  ShoppingOutlined,
-  ColumnHeightOutlined,
-  InboxOutlined,
-} from "@ant-design/icons";
-import { calcBoxesCount } from "../utils/formulas";
-import { boxes } from "../data/box";
+import type { BoxResponseDto, PackInBoxResponseDto } from "../types/dto";
+import type { FC } from "react";
 import Title from "antd/es/typography/Title";
 import Text from "antd/es/typography/Text";
+import { Card, List, Row, Col, Statistic } from "antd";
 
-const Result = ({
-  productionHeight = 0,
-  productionWeight = 0,
-  itemsTotal = 2,
-}) => {
-  const boxes18Count = calcBoxesCount(
-    productionHeight,
-    itemsTotal,
-    boxes[18].height
+interface IResultProps {
+  data: PackInBoxResponseDto;
+}
+
+const Result: FC<IResultProps> = ({ data }) => {
+  const {
+    box,
+    restBox,
+    productsVolume,
+    boxesVolume,
+    boxesQuantity,
+    boxesWeight,
+    boxesInnerVolume,
+  } = data;
+
+  const formatNumber = (num: number, suffix: string) =>
+    `${num.toFixed(4)} ${suffix}`;
+
+  const renderBox = (boxObj: BoxResponseDto, title: string) => (
+    <Card title={title} style={{ marginBottom: 20 }}>
+      <List>
+        <List.Item>
+          <Text strong>Product Quantity:</Text> {boxObj.productQuantity}
+        </List.Item>
+        <List.Item>
+          <Text strong>Product Volume:</Text>{" "}
+          {formatNumber(boxObj.productVolume, "m³")}
+        </List.Item>
+        <List.Item>
+          <Text strong>Weight:</Text> {formatNumber(boxObj.weight, "kg")}
+        </List.Item>
+        <List.Item>
+          <Text strong>Inner Volume:</Text>{" "}
+          {formatNumber(boxObj.innerVolume, "m³")}
+        </List.Item>
+        <List.Item>
+          <Text strong>Unused Volume Percent:</Text>{" "}
+          {formatNumber(boxObj.unusedVolumePercent, "%")}
+        </List.Item>
+      </List>
+    </Card>
   );
-
-  const boxes38Count = calcBoxesCount(
-    productionHeight,
-    itemsTotal,
-    boxes[38].height
-  );
-
-  const boxes18Weight = boxes18Count && productionWeight / boxes18Count;
-  const boxes38Weight = boxes38Count && productionWeight / boxes38Count;
 
   return (
     <div>
-      <Title level={3}>Результат</Title>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
-        <Text>
-          <ShoppingOutlined /> Вес тиража:{" "}
-          <span style={{ fontWeight: "bold" }}>{productionWeight} г</span>
-        </Text>
-        <Text>
-          <ColumnHeightOutlined /> Высота всего тиража:{" "}
-          <span style={{ fontWeight: "bold" }}>{productionHeight} мм</span>
-        </Text>
-      </div>
-      <Text>
-        <InboxOutlined style={{ verticalAlign: "middle" }} /> Можно использовать
-        гофрокороб (ДхШхВ):
-        <div style={{ fontWeight: "bold", paddingLeft: "20px" }}>
-          №18 (630x320x340) {boxes18Count} шт по {boxes18Weight} г <br />
-          №38 (380x304x285) {boxes38Count} шт по {boxes38Weight} г <br />
-        </div>
-      </Text>
+      <Title level={3}>Результаты</Title>
+      {renderBox(box, "Fully Packed Box")}
+      {renderBox(restBox, "Last Box with Remaining Items")}
+
+      <Row gutter={16}>
+        <Col span={8}>
+          <Statistic
+            title="Total Products Volume"
+            value={formatNumber(productsVolume, "m³")}
+          />
+        </Col>
+        <Col span={8}>
+          <Statistic
+            title="Total Boxes Volume"
+            value={formatNumber(boxesVolume, "m³")}
+          />
+        </Col>
+        <Col span={8}>
+          <Statistic
+            title="Total Boxes Inner Volume"
+            value={formatNumber(boxesInnerVolume, "m³")}
+          />
+        </Col>
+        <Col span={8}>
+          <Statistic
+            title="Total Boxes Weight"
+            value={formatNumber(boxesWeight, "kg")}
+          />
+        </Col>
+        <Col span={8}>
+          <Statistic title="Total Number of Boxes" value={boxesQuantity} />
+        </Col>
+      </Row>
     </div>
   );
 };

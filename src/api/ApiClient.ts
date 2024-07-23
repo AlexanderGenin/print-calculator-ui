@@ -26,7 +26,7 @@ export class ApiClient {
     try {
       const response = await fetch(url, fetchParams);
       const data: ApiResponse<T> = await response.json();
-      if (data.errorTraceId) {
+      if (data.errorTraceId || response.status >= 400) {
         throw new Error(`${data.title}: ${data.details}`);
       }
       return data;
