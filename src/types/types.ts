@@ -1,4 +1,4 @@
-export interface Laminate {
+export interface ILaminate {
   id: number;
   article: string;
   caption: string;
@@ -9,7 +9,7 @@ export interface Laminate {
   weight: number;
 }
 
-export interface Paper {
+export interface IPaper {
   id: number;
   article: string;
   caption: string;
@@ -41,4 +41,15 @@ export interface PaperColor {
 export interface MaterialType {
   id: number;
   caption: string;
+}
+
+export interface IBox {
+  id: number;
+  article: string;
+  caption: string;
+  width: number;
+  length: number;
+  height: number;
+  thickness: number;
+  weight: number;
 }

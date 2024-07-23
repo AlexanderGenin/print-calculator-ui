@@ -25,23 +25,13 @@ const Size = () => {
       <Form.Item wrapperCol={{ offset: 8, span: 16 }} required>
         <Space align="center">
           <Form.Item name="width" style={{ margin: 0 }}>
-            <InputNumber
-              min={1}
-              max={1000}
-              style={{ width: "100%" }}
-              disabled
-            />
+            <InputNumber min={1} max={1000} style={{ width: "100%" }} />
           </Form.Item>
           <div>
             <CloseOutlined />
           </div>
           <Form.Item name="height" style={{ margin: 0 }}>
-            <InputNumber
-              min={1}
-              max={1000}
-              style={{ width: "100%" }}
-              disabled
-            />
+            <InputNumber min={1} max={1000} style={{ width: "100%" }} />
           </Form.Item>
         </Space>
       </Form.Item>

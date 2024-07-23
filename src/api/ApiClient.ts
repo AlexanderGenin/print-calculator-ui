@@ -1,7 +1,9 @@
+import { PackInBoxRequestDto, PackInBoxResponseDto } from "../types/dto";
 import {
-  Laminate,
+  IBox,
+  ILaminate,
   MaterialType,
-  Paper,
+  IPaper,
   PaperColor,
   PaperFacture,
   PrintFormat,
@@ -16,10 +18,13 @@ type ApiResponse<T> = T & {
 export class ApiClient {
   constructor(private baseURL: string) {}
 
-  private async fetchData<T>(endpoint: string): Promise<T> {
+  private async fetchData<T>(
+    endpoint: string,
+    fetchParams?: RequestInit
+  ): Promise<T> {
     const url = `${this.baseURL}${endpoint}`;
     try {
-      const response = await fetch(url);
+      const response = await fetch(url, fetchParams);
       const data: ApiResponse<T> = await response.json();
       if (data.errorTraceId) {
         throw new Error(`${data.title}: ${data.details}`);
@@ -31,7 +36,7 @@ export class ApiClient {
   }
 
   getPapers() {
-    return this.fetchData<Paper[]>("/catalog/papers");
+    return this.fetchData<IPaper[]>("/catalog/papers");
   }
 
   getMaterialTypes() {
@@ -55,10 +60,24 @@ export class ApiClient {
   }
 
   getLaminates() {
-    return this.fetchData<Laminate[]>("/catalog/laminates");
+    return this.fetchData<ILaminate[]>("/catalog/laminates");
   }
 
   getLaminateThicknesses() {
     return this.fetchData<number[]>("/catalog/laminates/thicknesses");
+  }
+
+  getBoxes() {
+    return this.fetchData<IBox[]>("/catalog/boxes");
+  }
+
+  postPackInBox(body: PackInBoxRequestDto) {
+    return this.fetchData<PackInBoxResponseDto>(
+      "/calculations/algo/circulation/pack-in-box",
+      {
+        method: "POST",
+        body: JSON.stringify(body),
+      }
+    );
   }
 }

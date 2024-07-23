@@ -9,71 +9,107 @@ import Quantity from "../components/Quantity";
 import Border from "../ui/Border";
 import { formConfig } from "../utils/formConfig";
 import Controls from "../components/Controls";
+import { useMutation } from "@tanstack/react-query";
+import Box from "../components/Box";
+import { PackInBoxRequestDto } from "../types/dto";
+import { IBox, IPaper } from "../types/types";
+import { useApi } from "../context/ApiProvider";
+
+interface IForm {
+  size: number;
+  width: number;
+  height: number;
+  quantity: number;
+  materialType: number;
+  paperColor: number;
+  paperFacture: number;
+  paperDensity: number;
+  sidesNumber: number;
+  isLaminationOn: boolean;
+  laminationSides: number;
+  lamination: number;
+  laminateThickness: number;
+  box: number;
+  boxMargins: string;
+}
+
+interface ICalculatedFields {
+  paperThickness: number;
+  boxThickness: number;
+  boxWeight: number;
+  boxDimensions: string;
+}
 
 const Leaflets = () => {
-  const [form] = Form.useForm();
+  const [form] = Form.useForm<IForm>();
   const [productionHeight] = useState(0);
   const [productionWeight] = useState(0);
   const [itemsTotal] = useState(0);
 
-  const handleFinish = async (values: {
-    // quantity: number;
-    // laminationSides: number;
-    // width: number;
-    // height: number;
-    // filmType: keyof typeof laminations;
-    // mediaGramsSqMeterWeight: number;
-    // filmThicknessMicron: number;
-    // mediaName: string;
-  }) => {
-    // const {
-    //   quantity,
-    //   laminationSides,
-    //   width,
-    //   height,
-    //   filmType,
-    //   mediaGramsSqMeterWeight,
-    //   filmThicknessMicron,
-    //   mediaName,
-    // } = values;
+  const [calculatedFields, setCalculatedFields] = useState<ICalculatedFields>({
+    paperThickness: 0.0001,
+    boxThickness: 2,
+    boxDimensions: "310x260x380",
+    boxWeight: 1,
+  });
 
-    // const { mediaThicknessMm = 0 } =
-    //   materials.find((m) => m.mediaName === mediaName) ?? {};
+  const api = useApi();
 
-    // const {
-    //   filmRollWeightKg = 0,
-    //   filmRollLength = 0,
-    //   filmRollWidth = 0,
-    // } = filmType ? laminations[filmType] : {};
-
-    try {
-      // setProductionWeight(
-      //   calcProductionWeight({
-      //     quantity,
-      //     laminationSides,
-      //     detailWidth: width,
-      //     detailLength: height,
-      //     filmRollWeightKg,
-      //     filmRollLength,
-      //     filmRollWidth,
-      //     mediaGramsSqMeterWeight,
-      //   })
-      // );
-      // setProductionHeight(
-      //   calcProductionHeight({
-      //     quantity,
-      //     mediaThicknessMm,
-      //     laminationSides,
-      //     filmThicknessMicron,
-      //   })
-      // );
-      // setItemsTotal(calcItemsTotal());
-      console.log("Success:", values);
+  const { mutate: packInBoxMutate } = useMutation({
+    mutationFn: (data: PackInBoxRequestDto) => api.postPackInBox(data),
+    onSuccess: (result) => {
+      console.log(result);
       message.success("Расчет произведен успешно!");
-    } catch (error) {
-      console.error("Failed:", error);
-      message.error("Ошибка!");
-    }
+    },
+    onError: (err) => {
+      message.error(`Ошибка: ${err}`);
+    },
+  });
+
+  const handleBoxSelect = ({
+    thickness,
+    weight,
+    length,
+    width,
+    height,
+  }: IBox) => {
+    setCalculatedFields((prev) => ({
+      ...prev,
+      boxThickness: thickness,
+      boxWeight: weight,
+      boxDimensions: `${length * 1000}x${width * 1000}x${height * 1000}`,
+    }));
+  };
+
+  const handlePaperSelect = ({ thickness }: IPaper) => {
+    setCalculatedFields((prev) => ({
+      ...prev,
+      paperThickness: thickness,
+    }));
+  };
+
+  const handleFinish = async (values: IForm) => {
+    const { width, height, quantity, paperDensity, boxMargins } = values;
+
+    const { paperThickness, boxThickness, boxDimensions, boxWeight } =
+      calculatedFields;
+
+    console.log({ formValues: values, calculatedFields });
+
+    packInBoxMutate({
+      product: {
+        format: `${width}x${height}`,
+        thickness: paperThickness * 1_000_000,
+        weightM2: paperDensity * 1000,
+        quantity,
+      },
+      box: {
+        format: boxDimensions,
+        thickness: boxThickness * 1000,
+        margins: boxMargins,
+        weight: boxWeight * 1000,
+      },
+    });
   };
 
   return (
@@ -99,6 +135,8 @@ const Leaflets = () => {
           laminationSides: 1,
           lamination: 1,
           laminateThickness: 0.00003,
+          box: 1,
+          boxMargins: "10x20x30",
         }}
         autoComplete="off"
       >
@@ -106,9 +144,12 @@ const Leaflets = () => {
           <Border>
             <Size />
           </Border>
-          <Quantity />
+          <div style={{ padding: "1rem 1rem 0 1rem" }}>
+            <Quantity />
+            <Box handleSelect={handleBoxSelect} />
+          </div>
           <Border>
-            <Material />
+            <Material handleSelect={handlePaperSelect} />
           </Border>
           <Border>
             <Lamination />
