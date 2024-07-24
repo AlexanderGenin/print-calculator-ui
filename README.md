@@ -1,30 +1,33 @@
-# React + TypeScript + Vite
+# Описание Print Shop Front v0.0.1
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Этот репозиторий содержит описание web приложения Print Shop Front.
 
-Currently, two official plugins are available:
+## Статус приложения
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Web приложение находится в стадии разработки. Использует [React](https://react.dev/) и [TypeScript](https://www.typescriptlang.org/), а также сборщик [Vite](https://vitejs.dev/).
 
-## Expanding the ESLint configuration
+## Описание приложения
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Web приложение для расчёта стоимости и времени изготовления продукции.
 
-- Configure the top-level `parserOptions` property like this:
+## Разворачивание, установка и запуск приложения
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json', './tsconfig.app.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+### Установка зависимостей
+
+```shell
+npm i
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+### Запуск приложения
+
+```shell
+npm run dev
+```
+
+### Сборка приложения в продакшен
+
+```shell
+npm run build
+```
+
+Результат сборки будет находиться в папке `dist`.
